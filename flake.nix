@@ -11,8 +11,9 @@
     system = "x86_64-linux";
     overlays = [(import rust-overlay)];
     pkgs = import nixpkgs {inherit system overlays;};
+    toolchain = pkgs.rust-bin.fromRustupToolchainFile ./toolchain.toml;
   in {
     devShells.${system}.default =
-      pkgs.mkShell {buildInputs = [pkgs.rust-bin.stable.latest.default];};
+      pkgs.mkShell {buildInputs = [toolchain];};
   };
 }
