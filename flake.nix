@@ -12,8 +12,10 @@
     overlays = [(import rust-overlay)];
     pkgs = import nixpkgs {inherit system overlays;};
     rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./toolchain.toml;
+    nativeBuildInputs = [rustToolchain pkgs.pkg-config]; # Things required at compile-time.
+    buildInputs = [pkgs.openssl]; # Things required at run-time.
   in {
     devShells.${system}.default =
-      pkgs.mkShell {buildInputs = [rustToolchain];};
+      pkgs.mkShell {inherit buildInputs nativeBuildInputs;};
   };
 }
